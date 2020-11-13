@@ -1,7 +1,7 @@
 "use strict";
 
 function createShader(gl_o, type, source) {
-    let gl = new WebGLRenderingContext;
+    let gl = WebGLRenderingContext;
     gl = gl_o;
 
     var shader = gl.createShader(type);
@@ -18,7 +18,7 @@ function createShader(gl_o, type, source) {
 }
 
 function createProgram(gl_o, vertexShader, fragmentShader) {
-    let gl = new WebGLRenderingContext;
+    let gl = WebGLRenderingContext;
     gl = gl_o;
 
     var program = gl.createProgram();
@@ -37,9 +37,9 @@ function createProgram(gl_o, vertexShader, fragmentShader) {
 
 function main() {
     const canvas = document.querySelector("#canvas");
-    const gl_o = canvas.getContex('webgl');
+    const gl_o = canvas.getContext('webgl');
 
-    let gl = new WebGLRenderingContext;
+    let gl = WebGLRenderingContext;
     gl = gl_o;
 
     if (!gl) {
