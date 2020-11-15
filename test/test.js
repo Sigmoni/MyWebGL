@@ -35,6 +35,18 @@ function createProgram(gl_o, vertexShader, fragmentShader) {
     gl.deleteProgram(program);
 }
 
+function resizeCanvasToDisplaySize(canvas, multiplier) {
+    multiplier = multiplier || 1;
+    const width  = canvas.clientWidth  * multiplier | 0;
+    const height = canvas.clientHeight * multiplier | 0;
+    if (canvas.width !== width ||  canvas.height !== height) {
+      canvas.width  = height;
+      canvas.height = height;
+      return true;
+    }
+    return false;
+  }
+
 function main() {
     const canvas = document.querySelector("#canvas");
     const gl_o = canvas.getContext('webgl');
@@ -67,9 +79,11 @@ function main() {
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
+    resizeCanvasToDisplaySize(gl.canvas);
+
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    gl.clearColor(0, 0, 0, 0);
+    gl.clearColor(0, 1, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.useProgram(program);
