@@ -40,12 +40,20 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
     const width  = canvas.clientWidth  * multiplier | 0;
     const height = canvas.clientHeight * multiplier | 0;
     if (canvas.width !== width ||  canvas.height !== height) {
-      canvas.width  = height;
+      canvas.width  = width;
       canvas.height = height;
       return true;
     }
     return false;
   }
+
+function getShaderSource(filename, id) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", filename, false);
+    xmlhttp.send();
+    document.getElementById(id).innerHTML = xmlhttp.responseText;
+}
 
 function main() {
     const canvas = document.querySelector("#canvas");
@@ -58,6 +66,9 @@ function main() {
         return;
     }
 
+    getShaderSource("test.vs", "VertShader");
+    getShaderSource("test.fs", "FragShader");
+    
     var vertexShaderSource = document.querySelector('#VertShader').text;
     var fragmentShaderSource = document.querySelector('#FragShader').text;
 
@@ -83,7 +94,7 @@ function main() {
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    gl.clearColor(0, 1, 0, 0);
+    gl.clearColor(0, 1, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.useProgram(program);

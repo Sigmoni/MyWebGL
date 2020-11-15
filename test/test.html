@@ -2,19 +2,7 @@
     <link rel="stylesheet" type = "text/css" href="test.css">
 </head>
 <canvas id="canvas"></canvas>
-<script type="notjs" id="VertShader" src="test.vs">
-attribute vec4 a_position;
-
-void main() {
-    gl_Position = a_position;
-}
-</script>
-<script type="notjs" id="FragShader" src="test.fs">
-precision mediump float;
-
-void main() {
-    gl_FragColor = vec4(1, 0, 0.5, 1);
-}
-</script>
+<script type="notjs" id="VertShader"></script>
+<script type="notjs" id="FragShader"></script>
 <script src="test.js"></script>
 <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
