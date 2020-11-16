@@ -1,12 +1,7 @@
 "use strict";
 
 function main() {
-    const canvas = document.querySelector("#canvas");
-    const gl_o = canvas.getContext('webgl');
-
-    let gl = WebGLRenderingContext;
-    gl = gl_o;
-
+    let gl = contexInit();
     if (!gl) {
         return;
     }

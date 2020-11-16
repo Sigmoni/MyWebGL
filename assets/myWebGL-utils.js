@@ -69,3 +69,10 @@ function programInit(gl_o, src_vs, src_fs) {
 
     return program;
 }
+
+function contexInit() {
+    let canvas = document.querySelector("#canvas");
+    let gl = WebGLRenderingContext;
+    gl = canvas.getContext("webgl");
+    return gl;
+}
