@@ -1,9 +1,12 @@
 "use strict";
 
-function createShader(gl_o, type, source) {
-    let gl = WebGLRenderingContext;
-    gl = gl_o;
-
+/**
+ * Create and compile a shader
+ * @param {WebGLRenderingContext} gl
+ * @param {Number} type 
+ * @param {string} source 
+ */
+function createShader(gl, type, source) {
     var shader = gl.createShader(type);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
@@ -17,10 +20,13 @@ function createShader(gl_o, type, source) {
     gl.deleteShader(shader);
 }
 
-function createProgram(gl_o, vertexShader, fragmentShader) {
-    let gl = WebGLRenderingContext;
-    gl = gl_o;
-
+/**
+ * Create a program and link its shaders
+ * @param {WebGLRenderingContext} gl
+ * @param {WebGLShader} vertexShader 
+ * @param {WebGLShader} fragmentShader 
+ */
+function createProgram(gl, vertexShader, fragmentShader) {
     var program = gl.createProgram();
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
@@ -35,6 +41,11 @@ function createProgram(gl_o, vertexShader, fragmentShader) {
     gl.deleteProgram(program);
 }
 
+/**
+ * Resize the canvas to display size.
+ * @param {HTMLCanvasElement} canvas 
+ * @param {Number} multiplier 
+ */
 function resizeCanvasToDisplaySize(canvas, multiplier) {
     multiplier = multiplier || 1;
     const width  = canvas.clientWidth  * multiplier | 0;
@@ -47,6 +58,10 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
     return false;
   }
 
+  /**
+   * Get the shader source code by filename using AJAX
+   * @param {string} filename 
+   */
 function getShaderSource(filename) {
     var xmlhttp = new XMLHttpRequest();
 
@@ -55,10 +70,14 @@ function getShaderSource(filename) {
     return xmlhttp.responseText;
 }
 
-function programInit(gl_o, src_vs, src_fs) {
-    var gl = WebGLRenderingContext;
-    gl = gl_o;
-
+/**
+ * Initialize the program
+ * @param {WebGLRenderingContext} gl 
+ * @param {string} src_vs The source of vertex shader
+ * @param {string} src_fs The source of fragment shader
+ * @returns {WebGLProgram}
+ */
+function programInit(gl, src_vs, src_fs) {
     var vertexShaderSource = getShaderSource(src_vs);
     var fragmentShaderSource = getShaderSource(src_fs);
 
@@ -70,9 +89,14 @@ function programInit(gl_o, src_vs, src_fs) {
     return program;
 }
 
+/**
+ * Get the WebGL rendering contex of the canvas, 
+ * the canvas element must have the 'id' property that id = canvas
+ * @returns {WebGLRenderingContext} 
+ */
 function contexInit() {
     let canvas = document.querySelector("#canvas");
-    let gl = WebGLRenderingContext;
+    let gl = WebGLRenderingContext.prototype;
     gl = canvas.getContext("webgl");
     return gl;
 }

@@ -1,13 +1,8 @@
-attribute vec4 a_position;
-attribute vec3 a_normal;
+attribute vec4 a_VertPos;
 
-uniform mat4 u_worldViewProjection;
-uniform mat4 u_world;
-
-varying vec3 v_normal;
+uniform mat4 u_ModelViewMatrix;
+uniform mat4 u_ProjectionMatrix;
 
 void main() {
-    gl_Position = u_worldViewProjection * a_position;
-
-    v_normal = mat3(u_world) * a_normal;
+    gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_VertPos;
 }
