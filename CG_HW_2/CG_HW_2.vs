@@ -8,4 +8,5 @@ uniform mat4 u_ProjectionMatrix;
 
 void main() {
     gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_VertPos;
+    v_Color = a_VertColor;
 }
