@@ -4,6 +4,26 @@ const vec3TYPE = Float32Array.prototype;
 const vec4TYPE = Float32Array.prototype;
 const pointTYPE = Float32Array.prototype;
 
+class mat3 {
+    /**
+     * Compute the determinant of a mat3
+     * @param {mat3TYPE} matrix 
+     * @returns {Number} The answer
+     */
+    static determinant(matrix) {
+        let ans = 0;
+
+        ans += matrix[0] * matrix[4] * matrix[8];
+        ans += matrix[1] * matrix[5] * matrix[6];
+        ans += matrix[2] * matrix[3] * matrix[7];
+        ans -= matrix[0] * matrix[5] * matrix[7];
+        ans -= matrix[1] * matrix[3] * matrix[8];
+        ans -= matrix[2] * matrix[4] * matrix[6];
+
+        return ans;
+    }
+}
+
 class mat4 {
     constructor() { }
 
@@ -350,7 +370,7 @@ class mat4 {
      * Perform the transposition on a matrix
      * @param {mat4TYPE} matrix 
      */
-    static transposition(matrix) {
+    static transpose(matrix) {
         let out = new Float32Array(16);
 
         for (let i = 0; i < 4; i++) {
@@ -363,11 +383,139 @@ class mat4 {
     }
 
     /**
+     * Compute the algebratic cofactor of a mat4 at <column x, row y> 
+     * @param {mat4TYPE} matrix 
+     * @param {Number} x 
+     * @param {Number} y
+     * @returns {Number} The result M(x,y)
+     */
+    static cofactor(matrix, x, y) {
+        let out = new Float32Array(9);
+        let cnt = 0;
+
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4;j++) {
+                if (i != x && j != y) 
+                {
+                    out[cnt] = matrix[i * 4 + j];
+                    cnt++;
+                }
+            }
+        }
+
+        let sign = (((x + y) % 2) == 0) ? 1 : -1;
+        let ans = mat3.determinant(out);
+        ans *= sign;
+
+        return ans;
+    }
+
+    /**
+     * Compute the determinant of a mat4
+     * @param {mat4TYPE} matrix 
+     * @returns {Number} The result
+     */
+    static determinant(matrix) {
+        let ans = 0;
+        for (let i = 0; i < 4; i++) {
+            let tmp = matrix[i] * this.cofactor(matrix, 0, i);
+            ans += tmp;
+        }
+        return ans;
+    }
+
+    /**
+     * Invert a matrix
+     * @param {mat4TYPE} matrix 
+     */
+    static invert(matrix) {
+        let out = new Float32Array(16);
+        let det = this.determinant(matrix);
+
+        if (det == 0) return null;
+
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                out[i * 4 + j] = this.cofactor(matrix, i, j) / det;
+            }
+        }
+
+        this.copy(matrix, out);
+    }
+
+    /**
+     * A faster version of invesion
+     * @param {mat4TYPE} matrix 
+     */
+    static invert_fast(matrix) {
+        let a00 = matrix[0],
+            a01 = matrix[1],
+            a02 = matrix[2],
+            a03 = matrix[3];
+        let a10 = matrix[4],
+            a11 = matrix[5],
+            a12 = matrix[6],
+            a13 = matrix[7];
+        let a20 = matrix[8],
+            a21 = matrix[9],
+            a22 = matrix[10],
+            a23 = matrix[11];
+        let a30 = matrix[12],
+            a31 = matrix[13],
+            a32 = matrix[14],
+            a33 = matrix[15];
+
+        let b00 = a00 * a11 - a01 * a10;
+        let b01 = a00 * a12 - a02 * a10;
+        let b02 = a00 * a13 - a03 * a10;
+        let b03 = a01 * a12 - a02 * a11;
+        let b04 = a01 * a13 - a03 * a11;
+        let b05 = a02 * a13 - a03 * a12;
+        let b06 = a20 * a31 - a21 * a30;
+        let b07 = a20 * a32 - a22 * a30;
+        let b08 = a20 * a33 - a23 * a30;
+        let b09 = a21 * a32 - a22 * a31;
+        let b10 = a21 * a33 - a23 * a31;
+        let b11 = a22 * a33 - a23 * a32;
+
+        // Calculate the determinant
+        let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+
+        if (!det) {
+            return null;
+        }
+
+        det = 1.0 / det;
+
+        let out = new Float32Array(16);
+
+        out[0] = (a11 * b11 - a12 * b10 + a13 * b09) * det;
+        out[1] = (a02 * b10 - a01 * b11 - a03 * b09) * det;
+        out[2] = (a31 * b05 - a32 * b04 + a33 * b03) * det;
+        out[3] = (a22 * b04 - a21 * b05 - a23 * b03) * det;
+        out[4] = (a12 * b08 - a10 * b11 - a13 * b07) * det;
+        out[5] = (a00 * b11 - a02 * b08 + a03 * b07) * det;
+        out[6] = (a32 * b02 - a30 * b05 - a33 * b01) * det;
+        out[7] = (a20 * b05 - a22 * b02 + a23 * b01) * det;
+        out[8] = (a10 * b10 - a11 * b08 + a13 * b06) * det;
+        out[9] = (a01 * b08 - a00 * b10 - a03 * b06) * det;
+        out[10] = (a30 * b04 - a31 * b02 + a33 * b00) * det;
+        out[11] = (a21 * b02 - a20 * b04 - a23 * b00) * det;
+        out[12] = (a11 * b07 - a10 * b09 - a12 * b06) * det;
+        out[13] = (a00 * b09 - a01 * b07 + a02 * b06) * det;
+        out[14] = (a31 * b01 - a30 * b03 - a32 * b00) * det;
+        out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
+
+        this.transpose(out);
+        this.copy(matrix, out);
+    }
+
+    /**
      * Get a matrix ready to pass into the shaders
      * @param {mat4TYPE} matrix 
      */
     static matrixReady(matrix) {
-        this.transposition(matrix);
+        this.transpose(matrix);
     }
 
     /**

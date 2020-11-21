@@ -37,10 +37,12 @@ function programInformation(gl) {
     this.attribLocations = {
         vertexPosition: gl.getAttribLocation(currentProgram, "a_VertPos"),
         vertexColor: gl.getAttribLocation(currentProgram, "a_VertColor"),
+        vertexNormal: gl.getAttribLocation(currentProgram, "a_VertNormal"),
     }
     this.uniformLocations = {
         projectionMatrix:  gl.getUniformLocation(currentProgram, 'u_ProjectionMatrix'),
         modelViewMatrix: gl.getUniformLocation(currentProgram, "u_ModelViewMatrix"),
+        normalMatrix: gl.getUniformLocation(currentProgram, "u_NormalMatrix"),
     }
 }
 
@@ -97,6 +99,32 @@ function buffersInUse(gl) {
         gl.STATIC_DRAW
     );
 
+    const verticesNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, verticesNormalBuffer);
+
+    const faceNormals = [
+        [ 0.0,  0.0,  1.0],
+        [ 0.0,  0.0, -1.0],
+        [ 0.0,  1.0,  0.0],
+        [ 0.0, -1.0,  0.0],
+        [ 1.0,  0.0,  0.0],
+        [-1.0,  0.0,  0.0],
+    ];
+
+    let vertexNormals = [];
+
+    for (let i = 0; i < faceNormals.length; i++) {
+        const n = faceNormals[i];
+
+        vertexNormals = vertexNormals.concat(n, n, n, n);
+    }
+
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(vertexNormals),
+        gl.STATIC_DRAW
+    );
+
     const colorBuffer = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
@@ -145,6 +173,7 @@ function buffersInUse(gl) {
     this.position = positionBuffer;
     this.color = colorBuffer;
     this.index = indexBuffer;
+    this.normal = verticesNormalBuffer;
 }
 
 /**
@@ -194,6 +223,12 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     );
     mat4.matrixReady(modelViewMatrix);
 
+    const normalMatrix = mat4.create.fromIdentity();
+    mat4.copy(normalMatrix, modelViewMatrix);
+    mat4.invert_fast(normalMatrix);
+    mat4.transpose(normalMatrix);
+    mat4.matrixReady(normalMatrix);
+
     {
         const numComponents = 3;
         const type = gl.FLOAT;
@@ -211,6 +246,27 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
             offset
         );
         gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    }
+
+    {
+        const numComponents = 3;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
+        gl.vertexAttribPointer(
+            programInfo.attribLocations.vertexNormal,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset
+        );
+        gl.enableVertexAttribArray(
+            programInfo.attribLocations.vertexNormal
+        );
     }
 
     {
@@ -245,6 +301,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         programInfo.uniformLocations.projectionMatrix,
         false,
         projectionMatrix
+    );
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocations.normalMatrix,
+        false,
+        normalMatrix
     );
 
     {
