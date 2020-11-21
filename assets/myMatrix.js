@@ -84,7 +84,7 @@ class mat4 {
 
             let out = this.fromIdentity();
 
-            out[0] = b + c * rx * ry;
+            out[0] = b + c * rx * rx;
             out[1] = c * rx * ry - a * rz;
             out[2] = c * rx * rz + a * ry;
 

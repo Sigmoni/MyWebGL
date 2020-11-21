@@ -1,4 +1,5 @@
-let r = 0.0;
+let rx = 0.0;
+let ry = 0.0;
 
 main();
 
@@ -183,12 +184,12 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     );
     mat4.rotate(
         modelViewMatrix,
-        r,
-        [0, 0, 1]
+        rx,
+        [1, 0, 0]
     );
     mat4.rotate(
         modelViewMatrix,
-        2 * r,
+        ry,
         [0, 1, 0]
     );
     mat4.matrixReady(modelViewMatrix);
@@ -253,6 +254,9 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
 
-    r += deltaTime * 20;
-    if (r > 360) r -= 360;
+    rx += deltaTime * 25;
+    ry += deltaTime * 80;
+
+    if (rx > 360) rx -= 360;
+    if (ry > 360) ry -= 360;
 }
