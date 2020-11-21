@@ -20,6 +20,7 @@ function programInformation(gl) {
     this.program = currentProgram;
     this.attribLocations = {
         vertexPosition: gl.getAttribLocation(currentProgram, "a_VertPos"),
+        vertexColor: gl.getAttribLocation(currentProgram, "a_VertColor"),
     }
     this.uniformLocations = {
         projectionMatrix:  gl.getUniformLocation(currentProgram, 'u_ProjectionMatrix'),
@@ -49,8 +50,26 @@ function initBuffers(gl) {
         gl.STATIC_DRAW
     );
 
+    const colorBuffer = gl.createBuffer();
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+
+    const colors = new Float32Array([
+        1.0, 1.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+    ]);
+
+    gl.bufferData(
+        gl.ARRAY_BUFFER, 
+        colors,
+        gl.STATIC_DRAW
+    );
+
     return {
         position: positionBuffer,
+        color: colorBuffer,
     };
 }
 
@@ -58,7 +77,7 @@ function initBuffers(gl) {
  * The function that draws the scene.
  * @param {WebGLRenderingContext} gl 
  * @param {programInformation} programInfo 
- * @param {{position: WebGLBuffer}} buffers 
+ * @param {{position: WebGLBuffer, color: WebGLBuffer}} buffers 
  */
 function drawScene(gl, programInfo, buffers) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -88,15 +107,6 @@ function drawScene(gl, programInfo, buffers) {
         modelViewMatrix,
         [-0.0, 0.0, -6.0]
     );
-    mat4.scale(
-        modelViewMatrix,
-        [1, 2, 1]
-    );
-    mat4.rotate(
-        modelViewMatrix,
-        45,
-        [0, 0, 1]
-    );
     mat4.transposition(modelViewMatrix);
 
     {
@@ -114,6 +124,17 @@ function drawScene(gl, programInfo, buffers) {
         stride,
         offset
     );
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexColor,
+        4,
+        type,
+        normalize,
+        stride,
+        offset
+    );
+    
     gl.enableVertexAttribArray(
         programInfo.attribLocations.vertexPosition
     );
