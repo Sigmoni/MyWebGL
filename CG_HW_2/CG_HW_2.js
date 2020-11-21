@@ -130,12 +130,12 @@ function buffersInUse(gl) {
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 
     const faceColors = [
-        [1.0, 1.0, 1.0, 1.0],
         [1.0, 0.0, 0.0, 1.0],
         [0.0, 1.0, 1.0, 1.0],
+        [0.0, 1.0, 0.0, 1.0],
+        [1.0, 0.0, 1.0, 1.0],
         [0.0, 0.0, 1.0, 1.0],
         [1.0, 1.0, 0.0, 1.0],
-        [1.0, 0.0, 1.0, 1.0],
     ];
 
     let colors = [];
@@ -184,6 +184,11 @@ function buffersInUse(gl) {
  * @param {Number} deltaTime
  */
 function drawScene(gl, programInfo, buffers, deltaTime) {
+
+    resizeCanvasToDisplaySize(gl.canvas);
+
+    gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
+
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);

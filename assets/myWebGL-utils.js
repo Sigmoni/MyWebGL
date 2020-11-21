@@ -50,13 +50,13 @@ function resizeCanvasToDisplaySize(canvas, multiplier) {
     multiplier = multiplier || 1;
     const width  = canvas.clientWidth  * multiplier | 0;
     const height = canvas.clientHeight * multiplier | 0;
-    alert(canvas.height);
-    alert(canvas.width);
+    //alert(canvas.height);
+    //alert(canvas.width);
     if (canvas.width !== width ||  canvas.height !== height) {
       canvas.width  = width;
       canvas.height = height;
-    alert(canvas.height);
-    alert(canvas.width);
+    //alert(canvas.height);
+    //alert(canvas.width);
       return true;
     }
     return false;
