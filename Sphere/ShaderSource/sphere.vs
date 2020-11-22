@@ -15,9 +15,9 @@ void main() {
     gl_Position = u_PMatrix * u_MVMatrix * vec4(a_VertPos, 1.0);
     v_Color = a_VertColor;
 
-    vec3 ambientLight = vec3(0.6, 0.6, 0.6);
-    vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
-    vec3 directionalVector = vec3(0.85, 0.8, 0.75);
+    vec3 ambientLight = vec3(0.3, 0.3, 0.3);
+    vec3 directionalLightColor = vec3(0.8, 0.8, 0.8);
+    vec3 directionalVector = vec3(-0.85, -0.8, -0.75);
 
     vec4 transformedNormal = u_NMatrix * vec4(a_VertNormal, 1.0);
 

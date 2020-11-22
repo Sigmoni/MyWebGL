@@ -2,8 +2,8 @@
 
 class myArray {
     constructor() {
-        let x_resolution = 50;
-        let y_resolution = 50;
+        let x_resolution = 500;
+        let y_resolution = 500;
 
         let delta_x = 1.0 / x_resolution;
         let delta_y = 1.0 / y_resolution;

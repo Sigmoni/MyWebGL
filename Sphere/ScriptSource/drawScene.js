@@ -43,6 +43,10 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         r,
         [0, 1, 0]
     );
+    mat4.scale(
+        modelViewMatrix,
+        [1, 1, 1]
+    )
     mat4.matrixReady(modelViewMatrix);
 
     const normalMatrix = mat4.create.fromIdentity();
@@ -134,6 +138,6 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
     }
 
-    r += deltaTime * 20;
+    r += deltaTime * 40;
     if (r >= 360) r -= 360;
 }
