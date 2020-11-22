@@ -19,8 +19,9 @@ void main() {
     vec3 directionalLightColor = vec3(0.8, 0.8, 0.8);
     vec3 directionalVector = vec3(-0.85, -0.8, -0.75);
 
-    vec4 transformedNormal = u_NMatrix * vec4(a_VertNormal, 1.0);
+    vec3 transformedNormal = (u_NMatrix * vec4(a_VertNormal, 1.0)).xyz;
+    transformedNormal = normalize(transformedNormal);
 
-    float directional = max(dot(directionalVector, transformedNormal.xyz), 0.0);
+    float directional = max(dot(directionalVector, transformedNormal), 0.0);
     v_Lighting = ambientLight + (directionalLightColor * directional);
 } 

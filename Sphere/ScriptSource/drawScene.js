@@ -160,6 +160,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         modelViewMatrix2,
         [6, 0, 0]
     );
+    mat4.rotate(
+        modelViewMatrix2,
+        r1 * 2,
+        [0, 1, 0]
+    );
     mat4.scale(
         modelViewMatrix2,
         [0.75, 0.75, 0.75]
@@ -212,6 +217,11 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
     mat4.translate(
         modelViewMatrix3,
         [1.5, 0, 0]
+    );
+    mat4.rotate(
+        modelViewMatrix3,
+        r3 * 2,
+        [0, 1, 0]
     );
     mat4.scale(
         modelViewMatrix3,
