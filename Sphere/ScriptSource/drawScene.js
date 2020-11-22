@@ -1,4 +1,6 @@
-let r = 0;
+let r1 = 0;
+let r2 = 0;
+let r3 = 0;
 
 /**
  * 
@@ -31,21 +33,27 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         zNear,
         zFar
     );
+    mat4.lookAt(
+        projectionMatrix,
+        [0, 3, 1],
+        [0, 0, -12],
+        [0, 1, 0]
+    );
     mat4.matrixReady(projectionMatrix)
 
     const modelViewMatrix = mat4.create.fromIdentity();
     mat4.translate(
         modelViewMatrix,
-        [0.0, 0.0, -6.0]
+        [0.0, 0.0, -12.0]
     );
     mat4.rotate(
         modelViewMatrix,
-        r,
+        r1,
         [0, 1, 0]
     );
     mat4.scale(
         modelViewMatrix,
-        [1, 1, 1]
+        [3, 3, 3]
     )
     mat4.matrixReady(modelViewMatrix);
 
@@ -138,6 +146,109 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
     }
 
-    r += deltaTime * 40;
-    if (r >= 360) r -= 360;
+    const modelViewMatrix2 = mat4.create.fromIdentity();
+    mat4.translate(
+        modelViewMatrix2,
+        [0, 0, -12]
+    );
+    mat4.rotate(
+        modelViewMatrix2,
+        r2,
+        [0, -1, 0]
+    );
+    mat4.translate(
+        modelViewMatrix2,
+        [6, 0, 0]
+    );
+    mat4.scale(
+        modelViewMatrix2,
+        [0.75, 0.75, 0.75]
+    );
+    mat4.matrixReady(modelViewMatrix2);
+
+    const normalMatrix2 = mat4.create.fromIdentity();
+    mat4.copy(normalMatrix2, modelViewMatrix2);
+    mat4.invert_fast(normalMatrix2);
+    mat4.transpose(normalMatrix2);
+    mat4.matrixReady(normalMatrix2);
+
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocation.modelViewMatrix,
+        false,
+        modelViewMatrix2
+    );
+
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocation.normalMatrix,
+        false,
+        normalMatrix2
+    );
+
+    {
+        const vertexCount = buffers.vertexCount;
+        const offset = 0;
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
+    }
+
+    const modelViewMatrix3 = mat4.create.fromIdentity();
+    mat4.translate(
+        modelViewMatrix3,
+        [0, 0, -12]
+    );
+    mat4.rotate(
+        modelViewMatrix3,
+        r2,
+        [0, -1, 0]
+    );
+    mat4.translate(
+        modelViewMatrix3,
+        [6, 0, 0]
+    );
+    mat4.rotate(
+        modelViewMatrix3,
+        r3,
+        [0, 1, 0]
+    );
+    mat4.translate(
+        modelViewMatrix3,
+        [1.5, 0, 0]
+    );
+    mat4.scale(
+        modelViewMatrix3,
+        [0.25, 0.25, 0.25]
+    );
+    mat4.matrixReady(modelViewMatrix3);
+
+    const normalMatrix3 = mat4.create.fromIdentity();
+    mat4.copy(normalMatrix3, modelViewMatrix3);
+    mat4.invert_fast(normalMatrix3);
+    mat4.transpose(normalMatrix3);
+    mat4.matrixReady(normalMatrix3);
+
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocation.modelViewMatrix,
+        false,
+        modelViewMatrix3
+    );
+
+    gl.uniformMatrix4fv(
+        programInfo.uniformLocation.normalMatrix,
+        false,
+        normalMatrix3
+    );
+
+    {
+        const vertexCount = buffers.vertexCount;
+        const offset = 0;
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
+    }
+
+    r1 += deltaTime * 40;
+    if (r1 >= 360) r1 -= 360;
+
+    r2 += deltaTime * 20;
+    if (r2 >= 360) r2 -= 360;
+
+    r3 += deltaTime * 80;
+    if (r3 >= 360) r2 -= 360;
 }

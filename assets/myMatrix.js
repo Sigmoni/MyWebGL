@@ -214,7 +214,9 @@ class mat4 {
 
             let v = vec3.cross(w, u);
 
+           
             let out = new Float32Array(16);
+            /*
             out[0]  = u[0];
             out[1]  = v[0];
             out[2]  = w[0];
@@ -225,6 +227,18 @@ class mat4 {
             out[9]  = v[2];
             out[10] = w[2];
             out[15] = 1;
+            */
+            out[0] = u[0];
+            out[1] = u[1];
+            out[2] = u[2];
+            out[4] = v[0];
+            out[5] = v[1];
+            out[6] = v[2];
+            out[8] = w[0];
+            out[9] = w[1];
+            out[10] = w[2];
+            out[15] = 1;
+
 
             let transMat = this.fromTranslate([-pos[0], -pos[1], -pos[2]]);
 
