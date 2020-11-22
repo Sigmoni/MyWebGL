@@ -572,6 +572,22 @@ class vec3 {
             out[2] = B[2] - A[2];
 
             return out;
+        },
+        /**
+         * Create the normal vector of a plane defined by three points
+         * The points are passed into the function anticlockwise
+         * @param {pointTYPE} A 
+         * @param {pointTYPE} B 
+         * @param {pointTYPE} C 
+         */
+        fromNormal: function(A, B, C) {
+            let v1 = this.fromPointToPoint(A, B);
+            let v2 = this.fromPointToPoint(B, C);
+
+            let out = vec3.cross(v1, v2);
+            vec3.normalize(out);
+
+            return out;
         }
     }
 
