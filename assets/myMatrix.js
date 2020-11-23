@@ -216,18 +216,6 @@ class mat4 {
 
            
             let out = new Float32Array(16);
-            /*
-            out[0]  = u[0];
-            out[1]  = v[0];
-            out[2]  = w[0];
-            out[4]  = u[1];
-            out[5]  = v[1];
-            out[6]  = w[1];
-            out[8]  = u[2];
-            out[9]  = v[2];
-            out[10] = w[2];
-            out[15] = 1;
-            */
             out[0] = u[0];
             out[1] = u[1];
             out[2] = u[2];
