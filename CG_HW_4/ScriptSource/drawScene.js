@@ -313,6 +313,6 @@ function drawScene(gl, programInfo, buffers, deltaTime, mode) {
     r2 += deltaTime * 20;
     if (r2 >= 360) r2 -= 360;
 
-    r3 += deltaTime * 80;
+    r3 += deltaTime * 60;
     if (r3 >= 360) r2 -= 360;
 }

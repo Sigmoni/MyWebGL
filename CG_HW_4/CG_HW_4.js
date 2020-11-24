@@ -18,7 +18,7 @@ function main(mode) {
 
     r1 = (timeBase * 40) % 360;
     r2 = (timeBase * 20) % 360;
-    r3 = (timeBase * 80) % 360; 
+    r3 = (timeBase * 60) % 360; 
 
     let then = 0;
 
