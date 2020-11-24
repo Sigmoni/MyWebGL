@@ -307,12 +307,12 @@ function drawScene(gl, programInfo, buffers, deltaTime, mode) {
         gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
     }
 
-    timeBase = (timeBase + deltaTime) % 360;
-    angle = timeBase;
+    r1 += deltaTime * 40;
+    if (r1 >= 360) r1 -= 360;
 
-    r1 = (angle * 40) % 360;
-   
-    r2 = (angle * 20) % 360;
-    
-    r3 = (angle * 80) % 360;
+    r2 += deltaTime * 20;
+    if (r2 >= 360) r2 -= 360;
+
+    r3 += deltaTime * 80;
+    if (r3 >= 360) r2 -= 360;
 }

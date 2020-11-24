@@ -16,6 +16,10 @@ function main(mode) {
     let ms = time.getMilliseconds();
     timeBase = m * 60 + s + ms * 0.001;
 
+    r1 = (timeBase * 40) % 360;
+    r2 = (timeBase * 20) % 360;
+    r3 = (timeBase * 80) % 360; 
+
     let then = 0;
 
     function render(now) {
