@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id = "myDiv">
+            <select id="mode" onchange="modeChange()">
+                <option value="null">----</option>
+                <option value="0">全屏</option>
+                <option value="1">右上</option>
+                <option value="2">右下</option>
+                <option value="3">左上</option>
+                <option value="4">左下</option>
+            </select>
+        </div>
+    </body>
+    <canvas id="canvas"></canvas>
+</html>
+<script>
+   function modeChange() {
+       let mySelect = document.getElementById("mode");
+       let index = mySelect.selectedIndex;
+       let mode = index - 1;
+       let str = "<canvas id=\"canvas\"></canvas>";
+       document.getElementById("myDiv").innerHTML = str;
+   }
+</script>
