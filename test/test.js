@@ -18,6 +18,7 @@ function main() {
         0, 0,
         0, 0.5,
         0.7, 0,
+        0, 0,
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
@@ -25,7 +26,7 @@ function main() {
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    gl.clearColor(0, 1, 0, 1);
+    gl.clearColor(1, 1, 1, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.useProgram(program);
@@ -41,9 +42,9 @@ function main() {
     var offset = 0;
     gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
 
-    var primitiveType = gl.TRIANGLES;
+    var primitiveType = gl.LINE_STRIP;
     var offset = 0;
-    var count = 3;
+    var count = 4;
     gl.drawArrays(primitiveType, offset, count);
 }
 
